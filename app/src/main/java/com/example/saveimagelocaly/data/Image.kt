@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "image")
  data class Image(
  @PrimaryKey(autoGenerate = true)
- val id:Int=-1,
+ var id:Int=0,
  var description:String,
  var picture:String
 )

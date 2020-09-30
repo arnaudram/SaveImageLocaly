@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         val application= requireNotNull(this.application)
         val imageDao= getSingleDatabase(application.applicationContext).imageDao
        val imageViewModelFactory=InsertImageViewModelFactory(application, imageDao)
-
+          picture.setImageDrawable(getDrawable(R.drawable.ic_launcher_background))
         insertImageViewModel =ViewModelProvider(this,imageViewModelFactory)[InsertImageViewModel::class.java]
 
         if (insertImageViewModel.isNewlyCreated &&savedInstanceState != null){
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity() {
                     insertImageViewModel.insetImage(image)
                     Toast.makeText(this, "inserted", Toast.LENGTH_SHORT).show()
                     insertImageViewModel.doneInserting()
+                    navigateToListImageActivity(this)
                 }
 
             }
@@ -85,12 +87,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-   /* private fun bitmapToString(bitmap: Bitmap): String {
+    private fun navigateToListImageActivity(mainActivity: MainActivity) {
 
-        var bos=ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,bos)
-        return Base64.encodeToString(bos.toByteArray(),Base64.DEFAULT)
-    }*/
+        Intent(mainActivity,ListImagesActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
+
+    /* private fun bitmapToString(bitmap: Bitmap): String {
+
+         var bos=ByteArrayOutputStream()
+         bitmap.compress(Bitmap.CompressFormat.JPEG,100,bos)
+         return Base64.encodeToString(bos.toByteArray(),Base64.DEFAULT)
+     }*/
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
